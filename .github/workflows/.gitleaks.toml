@@ -1,0 +1,9 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Fake credentials used as scanner test data"
+paths = [
+  '''tests/data/.*''',
+  '''tests/test_gitleaks\.py''',
+]
