@@ -29,6 +29,9 @@ class GitleaksScanner(Scanner):
                 "--report-path", "/out/report.json",
                 "--no-banner",
             ]
+            if (Path(target) / ".gitleaks.toml").exists():
+                cmd += ["--config", "/repo/.gitleaks.toml"]
+
             try:
                 result = subprocess.run(
                     cmd, capture_output=True, text=True, timeout=timeout
