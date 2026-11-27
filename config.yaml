@@ -1,6 +1,6 @@
 scanners:
   gitleaks: {enabled: true}
-  trivy: {enabled: false}
+  trivy: {enabled: true}
   semgrep: {enabled: false}
 
 gate:
