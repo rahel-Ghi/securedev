@@ -1,0 +1,33 @@
+name: SecureDev scan
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pydantic pyyaml jinja2 pytest
+
+      - name: Run tests
+        run: python -m pytest
+
+      - name: Scan this repository
+        run: python -m core.cli . --out results/report.json
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: securedev-report
+          path: results/report.json
