@@ -1,7 +1,7 @@
 scanners:
   gitleaks: {enabled: true}
   trivy: {enabled: true}
-  semgrep: {enabled: false}
+  semgrep: {enabled: true}
 
 gate:
   fail_on: {critical: 1, high: 5}
