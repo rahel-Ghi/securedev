@@ -1,0 +1,8 @@
+scanners:
+  gitleaks: {enabled: true}
+  trivy: {enabled: false}
+  semgrep: {enabled: false}
+
+gate:
+  fail_on: {critical: 1, high: 5}
+  fail_on_secret: true
