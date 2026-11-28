@@ -19,7 +19,7 @@ def main(argv=None) -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(result.model_dump_json(indent=2), encoding="utf-8")
 
-        print(
+    print(
         f"findings: {len(result.findings)}, "
         f"duplicates removed: {result.duplicates_removed}, "
         f"failures: {len(result.failures)}"
