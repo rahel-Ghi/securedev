@@ -5,6 +5,7 @@ from core.dedup import deduplicate
 from core.finding import Finding
 from core.gate import GateResult, evaluate
 from core.registry import discover
+from core.risk import rank
 
 
 class ScanFailure(BaseModel):
@@ -36,6 +37,7 @@ def run_scan(target: str, config: Config, available=None) -> RunResult:
             failures.append(ScanFailure(scanner=name, error=str(exc)))
 
     findings, removed = deduplicate(findings)
+    findings = rank(findings)
 
     gate = evaluate(findings, config.gate.fail_on, config.gate.fail_on_secret)
     return RunResult(
