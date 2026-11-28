@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from core.config import Config
+from core.dedup import deduplicate
 from core.finding import Finding
 from core.gate import GateResult, evaluate
 from core.registry import discover
@@ -15,6 +16,7 @@ class RunResult(BaseModel):
     findings: list[Finding]
     failures: list[ScanFailure]
     gate: GateResult
+    duplicates_removed: int = 0
 
 
 def run_scan(target: str, config: Config, available=None) -> RunResult:
@@ -33,5 +35,12 @@ def run_scan(target: str, config: Config, available=None) -> RunResult:
         except Exception as exc:  # one failing scanner must not stop the run
             failures.append(ScanFailure(scanner=name, error=str(exc)))
 
+    findings, removed = deduplicate(findings)
+
     gate = evaluate(findings, config.gate.fail_on, config.gate.fail_on_secret)
-    return RunResult(findings=findings, failures=failures, gate=gate)
+    return RunResult(
+        findings=findings,
+        failures=failures,
+        gate=gate,
+        duplicates_removed=removed,
+    )

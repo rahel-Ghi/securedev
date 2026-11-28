@@ -19,7 +19,11 @@ def main(argv=None) -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(result.model_dump_json(indent=2), encoding="utf-8")
 
-    print(f"findings: {len(result.findings)}, failures: {len(result.failures)}")
+        print(
+        f"findings: {len(result.findings)}, "
+        f"duplicates removed: {result.duplicates_removed}, "
+        f"failures: {len(result.failures)}"
+    )
     print("GATE:", "PASSED" if result.gate.passed else "FAILED")
     for reason in result.gate.reasons:
         print(" -", reason)
